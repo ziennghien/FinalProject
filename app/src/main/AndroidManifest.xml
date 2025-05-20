@@ -24,9 +24,9 @@
         </activity>
 
         <activity android:name=".OtpActivity" />
-        <activity android:name=".CustomerHomeActivity"/>
-        <activity android:name=".AccountDetailActivity" />
-        <activity android:name=".EmployeeHomeActivity" />
+        <activity android:name=".home.CustomerHomeActivity"/>
+        <activity android:name=".customer.AccountDetailActivity" />
+        <activity android:name=".home.EmployeeHomeActivity" />
 
     </application>
 

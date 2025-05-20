@@ -1,4 +1,4 @@
-package com.end.finalproject;
+package com.end.finalproject.customer;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -7,6 +7,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.end.finalproject.R;
+import com.end.finalproject.adapter.TabPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

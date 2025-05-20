@@ -1,8 +1,9 @@
-package com.end.finalproject;
+package com.end.finalproject.home;
 
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -10,6 +11,10 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.end.finalproject.customer.AccountDetailActivity;
+import com.end.finalproject.MainActivity;
+import com.end.finalproject.R;
+import com.end.finalproject.customer.TransferActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,6 +63,14 @@ public class CustomerHomeActivity extends AppCompatActivity {
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         accountCard.startAnimation(fadeIn);
         welcomeText.startAnimation(fadeIn);
+
+        LinearLayout transferBtn = findViewById(R.id.layoutTransfer); // ID của layout chứa icon & text "Chuyển tiền"
+
+        transferBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(CustomerHomeActivity.this, TransferActivity.class);
+            startActivity(intent);
+        });
+
 
         MaterialCardView cardAccountDetail = findViewById(R.id.card_account_detail);
         String userId = getIntent().getStringExtra("key");

@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText passWordInput;
     private Button loginBtn;
     private FirebaseAuth mAuth;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,35 +88,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendOtp(String phoneNumber) {
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(phoneNumber)
-                        .setTimeout(60L, TimeUnit.SECONDS)
-                        .setActivity(this)
-                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                            @Override
-                            public void onVerificationCompleted(PhoneAuthCredential credential) {
-                                signInWithPhoneAuthCredential(credential);
-                            }
+        executorService.execute(() -> {
+            runOnUiThread(() -> Toast.makeText(MainActivity.this, "Đang gửi OTP...", Toast.LENGTH_SHORT).show());
 
-                            @Override
-                            public void onVerificationFailed(FirebaseException e) {
-                                Log.e(TAG, "OTP verification failed: " + e.getMessage());
-                                Toast.makeText(MainActivity.this, "Gửi OTP thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+            PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                    .setPhoneNumber(phoneNumber)
+                    .setTimeout(60L, TimeUnit.SECONDS)
+                    .setActivity(this)
+                    .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        @Override
+                        public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                            runOnUiThread(() -> signInWithPhoneAuthCredential(credential));
+                        }
 
-                            @Override
-                            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                                Log.d(TAG, "OTP sent successfully. Verification ID: " + verificationId);
+                        @Override
+                        public void onVerificationFailed(@NonNull FirebaseException e) {
+                            Log.e(TAG, "OTP verification failed: " + e.getMessage());
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this,
+                                    "Gửi OTP thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        }
+
+                        @Override
+                        public void onCodeSent(@NonNull String verificationId,
+                                               @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                            Log.d(TAG, "OTP sent successfully. Verification ID: " + verificationId);
+                            runOnUiThread(() -> {
                                 Intent intent = new Intent(MainActivity.this, OtpActivity.class);
                                 intent.putExtra("verificationId", verificationId);
                                 intent.putExtra("phoneNumber", phoneNumber);
                                 startActivity(intent);
-                            }
-                        })
-                        .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
+                            });
+                        }
+                    })
+                    .build();
+
+            PhoneAuthProvider.verifyPhoneNumber(options);
+        });
     }
+
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)

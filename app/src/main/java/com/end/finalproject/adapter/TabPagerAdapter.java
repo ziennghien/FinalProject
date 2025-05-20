@@ -1,9 +1,14 @@
-package com.end.finalproject;
+package com.end.finalproject.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.end.finalproject.fragment.TaiKhoanFragment;
+import com.end.finalproject.fragment.TaiKhoanThanhToanFragment;
+import com.end.finalproject.fragment.TaiKhoanTheChapFragment;
+import com.end.finalproject.fragment.TaiKhoanTietKiemFragment;
 
 public class TabPagerAdapter extends FragmentStateAdapter {
 

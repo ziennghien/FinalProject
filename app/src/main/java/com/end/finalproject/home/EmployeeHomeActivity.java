@@ -1,8 +1,10 @@
-package com.end.finalproject;
+package com.end.finalproject.home;
 
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.end.finalproject.R;
 
 public class EmployeeHomeActivity extends AppCompatActivity {
 

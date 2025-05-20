@@ -1,0 +1,126 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số tài khoản thế chấp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"/>
+    <EditText
+        android:id="@+id/et_mortgage_account"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Số tài khoản"
+        android:enabled="false"
+        android:focusable="false"
+        android:inputType="none"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/edittext_readonly_bg"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lãi suất (%)"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"/>
+    <EditText
+        android:id="@+id/et_interest_rate"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Lãi suất"
+        android:enabled="false"
+        android:focusable="false"
+        android:inputType="none"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/edittext_readonly_bg"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số tiền vay"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"/>
+    <EditText
+        android:id="@+id/et_loan_amount"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Số tiền vay"
+        android:enabled="false"
+        android:focusable="false"
+        android:inputType="none"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/edittext_readonly_bg"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số tiền trả hàng tháng"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"/>
+    <EditText
+        android:id="@+id/et_monthly_payment"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Tiền trả hàng tháng"
+        android:enabled="false"
+        android:focusable="false"
+        android:inputType="none"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/edittext_readonly_bg"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số tháng còn lại"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"/>
+    <EditText
+        android:id="@+id/et_remaining_term"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Số tháng còn lại"
+        android:enabled="false"
+        android:focusable="false"
+        android:inputType="none"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/edittext_readonly_bg"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="12dp" />
+</LinearLayout>

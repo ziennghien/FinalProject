@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Trang chủ" />
+    <item
+        android:id="@+id/qr"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="QR" />
+    <item
+        android:id="@+id/products"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Sản phẩm" />
+</menu>

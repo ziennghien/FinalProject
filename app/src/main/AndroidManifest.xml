@@ -27,6 +27,8 @@
         <activity android:name=".home.CustomerHomeActivity"/>
         <activity android:name=".customer.AccountDetailActivity" />
         <activity android:name=".home.EmployeeHomeActivity" />
+        <activity android:name=".management.DanhSachKhachHangActivity" />
+        <activity android:name=".management.AccountDetailManagementActivity" />
 
     </application>
 

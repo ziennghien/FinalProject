@@ -88,17 +88,19 @@
         android:textSize="18sp"
         android:layout_marginBottom="10dp"
         android:paddingLeft="5dp"/>
+    <!-- Địa chỉ thường trú -->
     <EditText
         android:id="@+id/et_address"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:hint="Địa chỉ thường trú"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
+        android:inputType="textMultiLine"
+        android:minLines="2"
+        android:gravity="top|start"
+        android:padding="12dp"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,18 +109,19 @@
         android:textSize="18sp"
         android:layout_marginBottom="10dp"
         android:paddingLeft="5dp"/>
+    <!-- Địa chỉ tạm trú -->
     <EditText
         android:id="@+id/et_currentAddress"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:hint="Địa chỉ tạm trú"
-        android:inputType="textPostalAddress"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
+        android:inputType="textMultiLine|textPostalAddress"
+        android:minLines="2"
+        android:gravity="top|start"
+        android:padding="12dp"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"/>
 
     <Button
         android:id="@+id/btn_save_address"

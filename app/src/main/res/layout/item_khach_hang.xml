@@ -16,7 +16,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvAccount"
+            android:id="@+id/tvCustomerId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Số tài khoản: 123456789"
@@ -25,7 +25,7 @@
             android:textColor="#000000" />
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/tvCustomerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên khách hàng: Nguyễn Văn A"

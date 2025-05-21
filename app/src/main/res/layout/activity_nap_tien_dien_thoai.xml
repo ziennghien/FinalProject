@@ -131,8 +131,7 @@
             android:textColor="#000000"
             android:backgroundTint="@android:color/white"
             android:elevation="2dp"
-            android:stateListAnimator="@null"
-            app:layout_columnWeight="1" />
+            android:stateListAnimator="@null"/>
 
         <Button
             android:id="@+id/btn20k"
@@ -145,8 +144,7 @@
             android:stateListAnimator="@null"
             android:text="20.000"
             android:textSize="12dp"
-            android:textColor="#000000"
-            app:layout_columnWeight="1" />
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btn50k"
@@ -159,8 +157,7 @@
             android:backgroundTint="@android:color/white"
             android:elevation="2dp"
             android:textSize="12dp"
-            android:stateListAnimator="@null"
-            app:layout_columnWeight="1" />
+            android:stateListAnimator="@null"/>
 
         <Button
             android:id="@+id/btn100k"
@@ -173,8 +170,7 @@
             android:textSize="12dp"
             android:backgroundTint="@android:color/white"
             android:elevation="2dp"
-            android:stateListAnimator="@null"
-            app:layout_columnWeight="1" />
+            android:stateListAnimator="@null"/>
 
         <Button
             android:id="@+id/btn200k"
@@ -187,8 +183,7 @@
             android:textColor="#000000"
             android:backgroundTint="@android:color/white"
             android:elevation="2dp"
-            android:stateListAnimator="@null"
-            app:layout_columnWeight="1" />
+            android:stateListAnimator="@null"/>
 
         <Button
             android:id="@+id/btn500k"
@@ -201,8 +196,7 @@
             android:textColor="#000000"
             android:backgroundTint="@android:color/white"
             android:elevation="2dp"
-            android:stateListAnimator="@null"
-            app:layout_columnWeight="1" />
+            android:stateListAnimator="@null"/>
     </GridLayout>
 
 

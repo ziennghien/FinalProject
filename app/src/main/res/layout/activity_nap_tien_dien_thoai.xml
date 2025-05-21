@@ -35,63 +35,6 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- 3 Button mạng -->
-    <LinearLayout
-        android:id="@+id/networkButtons"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="12dp"
-        android:weightSum="3"
-        app:layout_constraintTop_toBottomOf="@id/headerToolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="12dp">
-
-        <Button
-            android:id="@+id/btnViettel"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Viettel"
-            android:backgroundTint="@color/cardview_light_background"
-            android:textColor="@color/black"/>
-
-        <Button
-            android:id="@+id/btnMobifone"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Mobifone"
-            android:backgroundTint="@color/cardview_light_background"
-            android:textColor="@color/black"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/btnVinaphone"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Vinaphone"
-            android:backgroundTint="@color/cardview_light_background"
-            android:textColor="@color/black"/>
-    </LinearLayout>
-
-    <!-- Số điện thoại -->
-    <EditText
-        android:id="@+id/edtSoDienThoai"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="Nhập số điện thoại"
-        android:inputType="phone"
-        app:layout_constraintTop_toBottomOf="@id/networkButtons"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp"/>
-
     <!-- Số tiền hiển thị -->
     <EditText
         android:id="@+id/edtSoTien"
@@ -101,7 +44,7 @@
         android:hint="Số tiền muốn nạp"
         android:enabled="false"
         android:backgroundTint="#CCCCCC"
-        app:layout_constraintTop_toBottomOf="@id/edtSoDienThoai"
+        app:layout_constraintTop_toBottomOf="@id/headerToolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp" />

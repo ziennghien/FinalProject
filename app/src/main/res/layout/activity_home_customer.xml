@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="VCB Digibank"
+                android:text="KDK Digibank"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -314,6 +314,7 @@
 
             <!-- Mua sắm -->
             <LinearLayout
+                android:id="@+id/Entertainment"
                 style="@style/FeatureItemStyle"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp">

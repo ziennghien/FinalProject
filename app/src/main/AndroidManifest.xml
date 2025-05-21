@@ -29,6 +29,10 @@
         <activity android:name=".home.EmployeeHomeActivity" />
         <activity android:name=".management.DanhSachKhachHangActivity" />
         <activity android:name=".management.AccountDetailManagementActivity" />
+        <activity android:name=".entertainment.DatVeXeActivity" />
+        <activity android:name=".entertainment.EntertainmentListActivity" />
+        <activity android:name=".entertainment.DanhSachVeXeActivity" />
+        <activity android:name=".entertainment.ChonGheActivity" />
 
     </application>
 

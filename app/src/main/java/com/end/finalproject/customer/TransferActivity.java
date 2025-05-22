@@ -69,7 +69,6 @@ public class TransferActivity extends AppCompatActivity {
         edtReceiverName = findViewById(R.id.edtReceiverName);
         edtAmount = findViewById(R.id.edtAmount);
         edtNote = findViewById(R.id.edtNote);
-        edtPurpose = findViewById(R.id.edtPurpose);
         btnContinue = findViewById(R.id.btnContinue);
 
         loadBanks();
@@ -136,13 +135,16 @@ public class TransferActivity extends AppCompatActivity {
             Map<String, Object> data = new HashMap<>();
             data.put("accountNumber", fromAccount);
             data.put("phoneNumber", phoneNumber); // ✅ thêm dòng này
-            Log.d("Mark", "Sắp gọi sendOtp");
             Log.d("OTP_CALL", "Đang gửi OTP với data: " + new Gson().toJson(data));
 
             mFunctions.getHttpsCallable("sendOtp")
                 .call(data)
                 .addOnSuccessListener(result -> {
+                    Map response = (Map) result.getData();
+                    String otp = (String) response.get("otp");
+                    Log.d("OTP_Demo", "📲 OTP nhận được từ server: " + otp);
                     Toast.makeText(this, "Mã OTP đã gửi. Vui lòng kiểm tra.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "OTP (demo): " + otp, Toast.LENGTH_LONG).show(); //dùng để demo
                     showOtpDialog(fromAccount, request);  // mở dialog
                 })
                 .addOnFailureListener(e -> {
@@ -151,7 +153,6 @@ public class TransferActivity extends AppCompatActivity {
                     Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     btnContinue.setEnabled(true);
                 });
-            Log.d("Mark", "Gọi xong sendOtp");
         });
     }
 

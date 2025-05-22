@@ -3,6 +3,7 @@ package com.end.finalproject.customer;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
@@ -96,7 +97,12 @@ public class TransferInternalActivity extends AppCompatActivity {
             mFunctions.getHttpsCallable("sendOtp")
                     .call(data)
                     .addOnSuccessListener(result -> {
+                        Map response = (Map) result.getData();
+                        String otp = (String) response.get("otp");
+
+                        Log.d("OTP_Demo", "📲 OTP nhận được từ server: " + otp);
                         Toast.makeText(this, "Đã gửi mã OTP", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "OTP (demo): " + otp, Toast.LENGTH_LONG).show();
                         showOtpDialog(receiverAccount, amount, note);
                     })
                     .addOnFailureListener(e -> Toast.makeText(this, "Không gửi được OTP", Toast.LENGTH_SHORT).show());

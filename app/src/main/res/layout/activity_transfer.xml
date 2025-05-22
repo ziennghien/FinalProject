@@ -96,15 +96,6 @@
                 android:inputType="text"
                 android:layout_marginTop="16dp" />
 
-            <!-- Phân loại giao dịch -->
-            <EditText
-                android:id="@+id/edtPurpose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phân loại giao dịch"
-                android:inputType="text"
-                android:layout_marginTop="16dp" />
-
             <!-- Nút tiếp tục -->
             <Button
                 android:id="@+id/btnContinue"

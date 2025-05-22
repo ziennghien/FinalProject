@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import com.end.finalproject.MainActivity;
 import com.end.finalproject.R;
 import com.end.finalproject.customer.AccountDetailActivity;
+import com.end.finalproject.customer.HistoryActivity;
 import com.end.finalproject.customer.TransferActivity;
 import com.end.finalproject.customer.TransferInternalActivity;
 import com.end.finalproject.entertainment.EntertainmentListActivity;
@@ -78,6 +79,9 @@ public class CustomerHomeActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             balance.setText("Lỗi khi tải số dư");
         });
+        // 👉 Set dữ liệu vào View
+        welcomeText.setText(ten); // Ví dụ: Nguyễn Văn A
+        accountNumber.setText("Tài khoản: " + stk); // Ví dụ: 123456789
 
         // Load animation
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -123,10 +127,23 @@ public class CustomerHomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // History
+        MaterialCardView cardHistory = findViewById(R.id.card_transaction_history);
+        cardHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(CustomerHomeActivity.this, HistoryActivity.class);
+            intent.putExtra("key", userId);
+            intent.putExtra("email", email);
+            intent.putExtra("phoneNumber", phoneNumber);
+            startActivity(intent);
+        });
+
         // Entertainment section
         LinearLayout entertainmentLayout = findViewById(R.id.Entertainment);
         entertainmentLayout.setOnClickListener(v -> {
             Intent entIntent = new Intent(CustomerHomeActivity.this, EntertainmentListActivity.class);
+            entIntent.putExtra("key", userId);
+            entIntent.putExtra("email", email);
+            entIntent.putExtra("phoneNumber", phoneNumber);
             startActivity(entIntent);
         });
     }

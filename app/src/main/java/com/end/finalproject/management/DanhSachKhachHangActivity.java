@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.text.TextWatcher;
 import android.text.Editable;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.end.finalproject.R;
 import com.end.finalproject.adapter.CustomerAdapter;
+import com.end.finalproject.home.EmployeeHomeActivity;
 import com.end.finalproject.model.Customer;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DanhSachKhachHangActivity extends AppCompatActivity {
-    private static final String TAG = "DSKH";
 
     private EditText edtSearchKhachHang;
     private RecyclerView recyclerView;
@@ -37,8 +39,10 @@ public class DanhSachKhachHangActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() called");
         setContentView(R.layout.activity_danh_sach_khach_hang);
+
+        ImageView btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> finish());
 
         // 1. Khởi tạo view và list
         edtSearchKhachHang = findViewById(R.id.edtSearchKhachHang);
@@ -69,37 +73,35 @@ public class DanhSachKhachHangActivity extends AppCompatActivity {
         customerRef = FirebaseDatabase.getInstance(
                 "https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app"
         ).getReference("customers");
-        Log.d(TAG, "DatabaseReference: " + customerRef.toString());
 
         // 4. Tải dữ liệu
         loadCustomers();
+
+        FloatingActionButton faAddButton = findViewById(R.id.faAddButton); // ID của FAB
+
+        faAddButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DanhSachKhachHangActivity.this, AddCustomerActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadCustomers() {
-        customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        customerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "onDataChange: exists=" + snapshot.exists()
-                        + ", count=" + snapshot.getChildrenCount());
                 allCustomers.clear();
                 customerList.clear();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Customer c = snap.getValue(Customer.class);
-                    if (c != null) {
                         c.setId(snap.getKey());
-                        Log.d(TAG, "  -> " + c.getId() + " / " + c.getName());
                         allCustomers.add(c);
                         customerList.add(c);
-                    } else {
-                        Log.w(TAG, "Null Customer at key=" + snap.getKey());
-                    }
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "onCancelled: " + error.getMessage());
                 Toast.makeText(DanhSachKhachHangActivity.this,
                         "Lỗi tải dữ liệu: " + error.getMessage(),
                         Toast.LENGTH_SHORT).show();

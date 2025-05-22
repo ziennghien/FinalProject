@@ -29,7 +29,7 @@ public class TaiKhoanManagementFragment extends Fragment {
     private DatabaseReference custRef;
     private DatabaseReference userRef;
 
-    private EditText etName, etPhoneNumber, etEmail, etCCCD, etAddress, etCurrentAddress;
+    private EditText etName, etPhoneNumber, etEmail, etCCCD, etAddress, etCurrentAddress, etPassword;
     private Button btnSave;
 
     public TaiKhoanManagementFragment() {}
@@ -60,6 +60,8 @@ public class TaiKhoanManagementFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tai_khoan_management, container, false);
+
+        etPassword       = v.findViewById(R.id.et_password);
 
         etName           = v.findViewById(R.id.et_name);
         etPhoneNumber    = v.findViewById(R.id.et_phoneNumber);
@@ -105,6 +107,8 @@ public class TaiKhoanManagementFragment extends Fragment {
                 if (!snap.exists()) return;
                 etEmail.setText(snap.child("email").getValue(String.class));
                 etPhoneNumber.setText(snap.child("phoneNumber").getValue(String.class));
+                etPassword.setText(snap.child("password").getValue(String.class));  // thêm dòng này
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -114,6 +118,7 @@ public class TaiKhoanManagementFragment extends Fragment {
     }
 
     private void saveData() {
+        String passVal = etPassword.getText().toString().trim();
         String nameVal  = etName.getText().toString().trim();
         String phoneVal = etPhoneNumber.getText().toString().trim();
         String emailVal = etEmail.getText().toString().trim();
@@ -121,28 +126,64 @@ public class TaiKhoanManagementFragment extends Fragment {
         String addrVal  = etAddress.getText().toString().trim();
         String currVal  = etCurrentAddress.getText().toString().trim();
 
-        if (TextUtils.isEmpty(nameVal)
-                || TextUtils.isEmpty(phoneVal)
-                || TextUtils.isEmpty(emailVal)
-                || TextUtils.isEmpty(cccdVal)
-                || TextUtils.isEmpty(addrVal)
-                || TextUtils.isEmpty(currVal)) {
-            Toast.makeText(getContext(),
-                    "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        // Kiểm tra rỗng
+        if (TextUtils.isEmpty(nameVal) || TextUtils.isEmpty(phoneVal) || TextUtils.isEmpty(emailVal)
+                || TextUtils.isEmpty(cccdVal) || TextUtils.isEmpty(addrVal) || TextUtils.isEmpty(currVal)) {
+            Toast.makeText(getContext(), "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Save to "customers"
-        custRef.child("name").setValue(nameVal);
-        custRef.child("cccd").setValue(cccdVal);
-        custRef.child("address").setValue(addrVal);
-        custRef.child("currentAddress").setValue(currVal);
+        // Kiểm tra định dạng số điện thoại
+        if (!phoneVal.matches("\\+84\\d{9}")) {
+            Toast.makeText(getContext(), "Số điện thoại phải có định dạng +849xxxxxxxx", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-        // Save to "users"
-        userRef.child("email").setValue(emailVal);
-        userRef.child("phoneNumber").setValue(phoneVal);
+        // Kiểm tra định dạng email
+        if (!emailVal.endsWith("@gmail.com")) {
+            Toast.makeText(getContext(), "Email phải có định dạng @gmail.com", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-        Toast.makeText(getContext(),
-                "Đã lưu thông tin tài khoản", Toast.LENGTH_SHORT).show();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance(DB_URL).getReference();
+
+        // Kiểm tra trùng CCCD
+        rootRef.child("customers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean duplicateCCCD = false;
+
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    String existingCCCD = snap.child("cccd").getValue(String.class);
+                    if (cccdVal.equals(existingCCCD) && !snap.getKey().equals(uid)) {
+                        duplicateCCCD = true;
+                        break;
+                    }
+                }
+
+                if (duplicateCCCD) {
+                    Toast.makeText(getContext(), "Số CCCD đã được sử dụng bởi tài khoản khác!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // Nếu không trùng thì lưu
+                custRef.child("name").setValue(nameVal);
+                custRef.child("cccd").setValue(cccdVal);
+                custRef.child("address").setValue(addrVal);
+                custRef.child("currentAddress").setValue(currVal);
+
+                userRef.child("email").setValue(emailVal);
+                userRef.child("phoneNumber").setValue(phoneVal);
+                userRef.child("password").setValue(passVal);
+
+                Toast.makeText(getContext(), "Đã lưu thông tin tài khoản", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Lỗi kiểm tra CCCD: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 }

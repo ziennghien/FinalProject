@@ -30,8 +30,16 @@
         <activity android:name=".customer.HistoryActivity" />
 
         <activity android:name=".home.EmployeeHomeActivity" />
+        <activity android:name=".home.ProfileActivity" />
+
+        <activity android:name=".home.AdminHomeActivity" />
+
         <activity android:name=".management.DanhSachKhachHangActivity" />
+        <activity android:name=".management.DanhSachNhanVienActivity" />
         <activity android:name=".management.AccountDetailManagementActivity" />
+        <activity android:name=".management.AddCustomerActivity" />
+        <activity android:name=".management.AddUserActivity" />
+
         <activity android:name=".entertainment.DatVeXeActivity" />
         <activity android:name=".entertainment.EntertainmentListActivity" />
         <activity android:name=".entertainment.DanhSachVeXeActivity" />

@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+import com.end.finalproject.home.AdminHomeActivity;
 import com.end.finalproject.home.CustomerHomeActivity;
 import com.end.finalproject.home.EmployeeHomeActivity;
 import com.google.firebase.FirebaseException;
@@ -118,13 +119,31 @@ public class OtpActivity extends AppCompatActivity {
                                                     });
 
                                                 } else if ("employee".equalsIgnoreCase(role)) {
+                                                    String password = userSnapshot.child("password").getValue(String.class);
+                                                    String name = userSnapshot.child("name").getValue(String.class);
+
                                                     Intent intent = new Intent(OtpActivity.this, EmployeeHomeActivity.class);
                                                     intent.putExtra("key", userId);
                                                     intent.putExtra("email", email);
                                                     intent.putExtra("phoneNumber", phoneNumber);
+                                                    intent.putExtra("password", password);
+                                                    intent.putExtra("role", role);
+                                                    intent.putExtra("name", name);
                                                     startActivity(intent);
                                                     finish();
+                                                }else if ("admin".equalsIgnoreCase(role)) {
+                                                    String password = userSnapshot.child("password").getValue(String.class);
+                                                    String name = userSnapshot.child("name").getValue(String.class);
 
+                                                    Intent intent = new Intent(OtpActivity.this, AdminHomeActivity.class);
+                                                    intent.putExtra("key", userId);
+                                                    intent.putExtra("email", email);
+                                                    intent.putExtra("phoneNumber", phoneNumber);
+                                                    intent.putExtra("password", password);
+                                                    intent.putExtra("role", role);
+                                                    intent.putExtra("name", name);
+                                                    startActivity(intent);
+                                                    finish();
                                                 } else {
                                                     Toast.makeText(OtpActivity.this, "Không hỗ trợ vai trò: " + role, Toast.LENGTH_SHORT).show();
                                                 }

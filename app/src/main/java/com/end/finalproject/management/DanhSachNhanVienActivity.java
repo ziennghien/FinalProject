@@ -50,7 +50,7 @@ public class DanhSachNhanVienActivity extends AppCompatActivity {
 
         adapter = new UserAdapter(userList, user -> {
             Intent intent = new Intent(DanhSachNhanVienActivity.this, ProfileActivity.class);
-            intent.putExtra("userId", user.getPhoneNumber());
+            intent.putExtra("userId", user.getUserId());
             intent.putExtra("email", user.getEmail());
             intent.putExtra("name", user.getName());
             intent.putExtra("phoneNumber", user.getPhoneNumber());
@@ -77,6 +77,12 @@ public class DanhSachNhanVienActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadEmployees();
+    }
+
     private void loadEmployees() {
         DatabaseReference userRef = FirebaseDatabase.getInstance(DB_URL).getReference("users");
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -87,6 +93,7 @@ public class DanhSachNhanVienActivity extends AppCompatActivity {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     User user = child.getValue(User.class);
                     if (user != null && "employee".equalsIgnoreCase(user.getRole())) {
+                        user.setUserId(child.getKey()); // Gán key từ Firebase vào userid
                         allUsers.add(user);
                         userList.add(user);
                     }
@@ -118,4 +125,5 @@ public class DanhSachNhanVienActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
     }
+
 }

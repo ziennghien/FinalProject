@@ -1,6 +1,7 @@
 package com.end.finalproject.model;
 
 public class User {
+    private String userid;
     private String email;
     private String password;
     private String phoneNumber;
@@ -11,7 +12,8 @@ public class User {
         // Required for Firebase deserialization
     }
 
-    public User(String email, String password, String phoneNumber, String role, String name) {
+    public User(String userid, String email, String password, String phoneNumber, String role, String name) {
+        this.userid = userid;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -20,6 +22,14 @@ public class User {
     }
 
     // Getters and Setters
+
+    public String getUserId() {
+        return userid;
+    }
+
+    public void setUserId(String userid) {
+        this.userid = userid;
+    }
 
     public String getEmail() {
         return email;

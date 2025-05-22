@@ -37,6 +37,19 @@
 
     <!-- Số tiền hiển thị -->
     <EditText
+        android:id="@+id/edtSoDienThoai"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Số Điện Thoại"
+        android:backgroundTint="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/headerToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp" />
+
+    <!-- Số tiền hiển thị -->
+    <EditText
         android:id="@+id/edtSoTien"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +57,7 @@
         android:hint="Số tiền muốn nạp"
         android:enabled="false"
         android:backgroundTint="#CCCCCC"
-        app:layout_constraintTop_toBottomOf="@id/headerToolbar"
+        app:layout_constraintTop_toBottomOf="@id/edtSoDienThoai"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp" />

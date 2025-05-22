@@ -16,6 +16,7 @@ import com.end.finalproject.MainActivity;
 import com.end.finalproject.R;
 import com.end.finalproject.customer.AccountDetailActivity;
 import com.end.finalproject.customer.HistoryActivity;
+import com.end.finalproject.customer.TopUpActivity;
 import com.end.finalproject.customer.TransferActivity;
 import com.end.finalproject.customer.TransferInternalActivity;
 import com.end.finalproject.entertainment.EntertainmentListActivity;
@@ -141,6 +142,16 @@ public class CustomerHomeActivity extends AppCompatActivity {
         LinearLayout entertainmentLayout = findViewById(R.id.Entertainment);
         entertainmentLayout.setOnClickListener(v -> {
             Intent entIntent = new Intent(CustomerHomeActivity.this, EntertainmentListActivity.class);
+            entIntent.putExtra("key", userId);
+            entIntent.putExtra("email", email);
+            entIntent.putExtra("phoneNumber", phoneNumber);
+            startActivity(entIntent);
+        });
+
+        // Phone Top Up
+        LinearLayout topup = findViewById(R.id.TopUp);
+        topup.setOnClickListener(v -> {
+            Intent entIntent = new Intent(CustomerHomeActivity.this, TopUpActivity.class);
             entIntent.putExtra("key", userId);
             entIntent.putExtra("email", email);
             entIntent.putExtra("phoneNumber", phoneNumber);

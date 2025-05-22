@@ -53,6 +53,7 @@
         <activity android:name=".customer.TransferActivity" />
         <activity android:name=".customer.TransactionSuccessActivity" />
         <activity android:name=".customer.TransferInternalActivity" />
+        <activity android:name=".customer.TopUpActivity" />
     </application>
 
 </manifest>

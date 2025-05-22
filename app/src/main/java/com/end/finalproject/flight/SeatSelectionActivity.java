@@ -71,8 +71,19 @@ public class SeatSelectionActivity extends AppCompatActivity {
                 return;
             }
             long total = pricePerSeat * selectedSeats.size();
-            saveTicket(total);
+
+            String message = "Bạn có chắc chắn muốn đặt " + selectedSeats.size() + " ghế?"
+                    + "\nGhế: " + String.join(", ", selectedSeats)
+                    + "\nTổng tiền: " + String.format(Locale.US, "%,d VND", total);
+
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Xác nhận đặt vé")
+                    .setMessage(message)
+                    .setPositiveButton("Xác nhận", (dialog, which) -> saveTicket(total))
+                    .setNegativeButton("Huỷ", null)
+                    .show();
         });
+
     }
 
     private void setupSeatButtons() {
@@ -173,14 +184,19 @@ public class SeatSelectionActivity extends AppCompatActivity {
                                 int historyCount = (int) snapshot.getChildrenCount();
                                 String historyKey = "history" + (historyCount + 1);
 
-                                String timestamp = new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.US).format(new Date());
-                                String balanceStatus = "Tài khoản " + accountNumber + " -" + amount + " lúc " + timestamp;
+                                Date now = new Date();
+                                String datePart = new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(now);
+                                String timePart = new SimpleDateFormat("HH:mm", Locale.US).format(now);
+                                String timestamp = timePart + " - " + datePart;
+
+                                String balanceStatus = "Tài khoản " + accountNumber + " -" + amount
+                                        + " lúc " + timestamp + ", số dư còn " + String.format("%,d", newBalance);
 
                                 Map<String, Object> historyData = new HashMap<>();
                                 historyData.put("customerId", customerId);
                                 historyData.put("date", timestamp);
                                 historyData.put("balanceStatus", balanceStatus);
-                                historyData.put("info", "Đặt vé máy bay");
+                                historyData.put("info", "Đặt vé máy bay lúc " + timePart);
 
                                 historyRef.child(historyKey).setValue(historyData);
                             }

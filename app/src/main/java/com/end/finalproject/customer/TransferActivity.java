@@ -104,56 +104,84 @@ public class TransferActivity extends AppCompatActivity {
 
         btnContinue.setOnClickListener(view -> {
             String account = edtReceiverAccount.getText().toString().trim();
-            String amount = edtAmount.getText().toString().trim();
+            String amountStr = edtAmount.getText().toString().trim();
             String note = edtNote.getText().toString().trim();
 
-            if (account.isEmpty() || amount.isEmpty()) {
+            if (account.isEmpty() || amountStr.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin bắt buộc", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             double amountValue;
             try {
-                amountValue = Double.parseDouble(amount);
+                amountValue = Double.parseDouble(amountStr);
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            double balance = Double.parseDouble(getIntent().getStringExtra("balance"));
-            if (amountValue > balance) {
-                Toast.makeText(this, "Số dư không đủ", Toast.LENGTH_SHORT).show();
+            if (amountValue < 1000) {
+                Toast.makeText(this, "Số tiền phải từ 1000 VND trở lên", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             btnContinue.setEnabled(false);
 
             String fromAccount = getIntent().getStringExtra("accountNumber");
+            String userId = getIntent().getStringExtra("key");
+
             TransferRequest request = new TransferRequest(fromAccount, account, selectedBin, amountValue, note);
 
-            // Gửi OTP
-            Map<String, Object> data = new HashMap<>();
-            data.put("accountNumber", fromAccount);
-            data.put("phoneNumber", phoneNumber); // ✅ thêm dòng này
-            Log.d("OTP_CALL", "Đang gửi OTP với data: " + new Gson().toJson(data));
+            // 🔁 Đọc balance từ Firebase thay vì từ Intent
+            DatabaseReference balanceRef = FirebaseDatabase.getInstance("https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app")
+                    .getReference("customers")
+                    .child(userId)
+                    .child("checkingAccount")
+                    .child("balance");
 
-            mFunctions.getHttpsCallable("sendOtp")
-                .call(data)
-                .addOnSuccessListener(result -> {
-                    Map response = (Map) result.getData();
-                    String otp = (String) response.get("otp");
-                    Log.d("OTP_Demo", "📲 OTP nhận được từ server: " + otp);
-                    Toast.makeText(this, "Mã OTP đã gửi. Vui lòng kiểm tra.", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(this, "OTP (demo): " + otp, Toast.LENGTH_LONG).show(); //dùng để demo
-                    showOtpDialog(fromAccount, request);  // mở dialog
-                })
-                .addOnFailureListener(e -> {
-                    //Toast.makeText(this, "Gửi OTP thất bại", Toast.LENGTH_SHORT).show();
-                    Log.e("OTP_FAIL", "❌ Gửi OTP thất bại", e);
-                    Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            balanceRef.get().addOnSuccessListener(snapshot -> {
+                if (!snapshot.exists()) {
+                    Toast.makeText(this, "Không tìm thấy số dư", Toast.LENGTH_SHORT).show();
                     btnContinue.setEnabled(true);
-                });
+                    return;
+                }
+
+                double currentBalance = snapshot.getValue(Double.class);
+
+                if (amountValue > currentBalance) {
+                    Toast.makeText(this, "Số dư không đủ", Toast.LENGTH_SHORT).show();
+                    btnContinue.setEnabled(true);
+                    return;
+                }
+
+                // Gửi OTP
+                Map<String, Object> data = new HashMap<>();
+                data.put("accountNumber", fromAccount);
+                data.put("phoneNumber", phoneNumber);
+                Log.d("OTP_CALL", "Đang gửi OTP với data: " + new Gson().toJson(data));
+
+                mFunctions.getHttpsCallable("sendOtp")
+                        .call(data)
+                        .addOnSuccessListener(result -> {
+                            Map response = (Map) result.getData();
+                            String otp = (String) response.get("otp");
+                            Log.d("OTP_Demo", "📲 OTP nhận được từ server: " + otp);
+                            Toast.makeText(this, "Mã OTP đã gửi. Vui lòng kiểm tra.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "OTP (demo): " + otp, Toast.LENGTH_LONG).show(); // demo
+                            showOtpDialog(fromAccount, request);  // mở dialog
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("OTP_FAIL", "❌ Gửi OTP thất bại", e);
+                            Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            btnContinue.setEnabled(true);
+                        });
+
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "Không thể đọc số dư: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                btnContinue.setEnabled(true);
+            });
         });
+
     }
 
     private void lookupReceiverWithFirebase(String bankCode, String accountNumber) {

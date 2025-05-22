@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:gravity="center"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_check_circle"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giao dịch thành công"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
+
+        <!-- Amount -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số tiền"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"/>
+        <TextView
+            android:id="@+id/txtAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Time -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thời gian"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Receiver Account -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số tài khoản nhận"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtReceiverAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Receiver Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên người nhận"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtReceiverName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Bank Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ngân hàng nhận"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtBankName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Note -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nội dung"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Transaction ID -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mã giao dịch"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txtTxnId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnNewTransaction"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Giao dịch mới"
+                android:textSize="14sp"
+                android:backgroundTint="@color/pink_primary"/>
+
+            <Button
+                android:id="@+id/btnHome"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Trang chủ"
+                android:textSize="14sp"
+                android:backgroundTint="@color/pink_primary"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

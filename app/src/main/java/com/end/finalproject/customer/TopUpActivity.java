@@ -26,7 +26,6 @@ public class TopUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nap_tien_dien_thoai);
 
-        // Nút back
         ImageView btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
 
@@ -141,13 +140,13 @@ public class TopUpActivity extends AppCompatActivity {
                 Date now = new Date();
                 String datePart = new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(now);
                 String timePart = new SimpleDateFormat("HH:mm", Locale.US).format(now);
-
+                String timestamp = datePart + " - " + timePart;
                 Map<String, Object> data = new HashMap<>();
                 data.put("customerId", userId);
-                data.put("date", datePart);
+                data.put("date", timestamp);
                 data.put("info", accNum + " đã nạp cho " + phone + " " + amount + "đ lúc " + timePart);
                 data.put("balanceStatus", "Tài khoản " + accNum + " -" + (amount - (long)(amount * DISCOUNT)) +
-                        " lúc " + datePart + " - " + timePart + ", số dư còn " + newBalance);
+                        " lúc " + timestamp + ", số dư còn " + newBalance);
 
 
                 db.child("historys").child(historyKey).setValue(data);

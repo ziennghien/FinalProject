@@ -18,8 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HistoryActivity extends AppCompatActivity {
     private static final String DB_URL =
@@ -62,7 +66,19 @@ public class HistoryActivity extends AppCompatActivity {
                 }
 
                 // Sắp xếp danh sách
-                historyList.sort((h1, h2) -> h2.getKey().compareToIgnoreCase(h1.getKey()));
+                // Sắp xếp theo date mới nhất đến cũ nhất
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault());
+                historyList.sort((h1, h2) -> {
+                    try {
+                        Date d1 = sdf.parse(h1.getDate());
+                        Date d2 = sdf.parse(h2.getDate());
+                        return d2.compareTo(d1); // Mới nhất trước
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return 0; // Không đổi vị trí nếu lỗi
+                    }
+                });
+
 
                 adapter.notifyDataSetChanged();
             }

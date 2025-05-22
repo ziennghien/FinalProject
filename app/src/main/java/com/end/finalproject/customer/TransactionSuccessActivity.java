@@ -92,13 +92,14 @@ public class TransactionSuccessActivity extends AppCompatActivity {
                     Date now = new Date();
                     String datePart = new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(now);
                     String timePart = new SimpleDateFormat("HH:mm", Locale.US).format(now);
+                    String timestamp = timePart + " - " + datePart;
                     // Ghi lịch sử cho người gửi
                     Map<String, Object> senderHistory = new HashMap<>();
                     senderHistory.put("customerId", userId);
-                    senderHistory.put("date", datePart);
+                    senderHistory.put("date", timestamp);
                     senderHistory.put("info", info);
                     senderHistory.put("balanceStatus", "Tài khoản " + accountNumber + " -" + (long) amount +
-                            " lúc " + timePart + " - " + datePart + ", số dư còn " + senderBalance);
+                            " lúc " + timestamp + ", số dư còn " + senderBalance);
 
                     historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -141,10 +142,10 @@ public class TransactionSuccessActivity extends AppCompatActivity {
                             // Ghi lịch sử cho người nhận
                             Map<String, Object> receiverHistory = new HashMap<>();
                             receiverHistory.put("customerId", receiverId);
-                            receiverHistory.put("date", datePart);
+                            receiverHistory.put("date", timestamp);
                             receiverHistory.put("info", info);
                             receiverHistory.put("balanceStatus", "Tài khoản " + receiverAccount + " +" + (long) amount +
-                                    " lúc " + timePart + " - " + datePart + ", số dư còn " + receiverBalance);
+                                    " lúc " + timestamp + ", số dư còn " + receiverBalance);
 
                             historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override

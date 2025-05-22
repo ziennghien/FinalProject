@@ -7,12 +7,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.end.finalproject.R;
 import com.end.finalproject.home.CustomerHomeActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class TransactionSuccessActivity extends AppCompatActivity {
 
@@ -53,6 +63,115 @@ public class TransactionSuccessActivity extends AppCompatActivity {
         accountNumber = intent.getStringExtra("accountNumber");
         name = intent.getStringExtra("name");
         phoneNumber = intent.getStringExtra("phoneNumber");
+
+        // Sau khi đã getExtra các trường từ Intent
+        String txnId = intent.getStringExtra("transactionId");
+        String time = intent.getStringExtra("time");
+        String receiverAccount = intent.getStringExtra("receiverAccount");
+        String receiverName = intent.getStringExtra("receiverName");
+        String note = intent.getStringExtra("note");
+        double amount = Double.parseDouble(intent.getStringExtra("amount").replace(",", ""));
+
+// Truy vấn lại số dư và ghi lịch sử cho cả người gửi và người nhận
+        DatabaseReference customerRef = FirebaseDatabase
+                .getInstance("https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app")
+                .getReference("customers");
+
+        DatabaseReference historyRef = FirebaseDatabase.getInstance("https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app")
+                .getReference("historys");
+
+        customerRef.child(userId).child("checkingAccount").child("balance").get()
+                .addOnSuccessListener(balanceSnapshot -> {
+                    if (!balanceSnapshot.exists()) {
+                        Log.e("HISTORY", "❌ Không lấy được số dư mới sau giao dịch");
+                        return;
+                    }
+
+                    long senderBalance = balanceSnapshot.getValue(Long.class);
+                    String info = accountNumber + " " + name + " chuyển tiền " + receiverAccount + " " + receiverName;
+                    Date now = new Date();
+                    String datePart = new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(now);
+                    String timePart = new SimpleDateFormat("HH:mm", Locale.US).format(now);
+                    // Ghi lịch sử cho người gửi
+                    Map<String, Object> senderHistory = new HashMap<>();
+                    senderHistory.put("customerId", userId);
+                    senderHistory.put("date", datePart);
+                    senderHistory.put("info", info);
+                    senderHistory.put("balanceStatus", "Tài khoản " + accountNumber + " -" + (long) amount +
+                            " lúc " + timePart + " - " + datePart + ", số dư còn " + senderBalance);
+
+                    historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            long count = snapshot.getChildrenCount();
+                            String senderHistoryKey = "history" + (count + 1);
+                            historyRef.child(senderHistoryKey).setValue(senderHistory)
+                                    .addOnSuccessListener(v -> Log.d("HISTORY", "✅ Lưu lịch sử người gửi thành công"))
+                                    .addOnFailureListener(e -> Log.e("HISTORY", "❌ Lỗi khi lưu lịch sử người gửi", e));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("HISTORY", "❌ Không thể ghi lịch sử người gửi", error.toException());
+                        }
+                    });
+
+                    // 🔍 Tìm userId của người nhận theo số tài khoản
+                    customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String receiverId = null;
+                            long receiverBalance = 0;
+
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                String acc = child.child("checkingAccount").child("accountNumber").getValue(String.class);
+                                if (acc != null && acc.equals(receiverAccount)) {
+                                    receiverId = child.getKey();
+                                    Long bal = child.child("checkingAccount").child("balance").getValue(Long.class);
+                                    receiverBalance = bal != null ? bal : 0;
+                                    break;
+                                }
+                            }
+
+                            if (receiverId == null) {
+                                Log.e("HISTORY", "❌ Không tìm thấy người nhận với số tài khoản: " + receiverAccount);
+                                return;
+                            }
+
+                            // Ghi lịch sử cho người nhận
+                            Map<String, Object> receiverHistory = new HashMap<>();
+                            receiverHistory.put("customerId", receiverId);
+                            receiverHistory.put("date", datePart);
+                            receiverHistory.put("info", info);
+                            receiverHistory.put("balanceStatus", "Tài khoản " + receiverAccount + " +" + (long) amount +
+                                    " lúc " + timePart + " - " + datePart + ", số dư còn " + receiverBalance);
+
+                            historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    long count = snapshot.getChildrenCount();
+                                    String receiverHistoryKey = "history" + (count + 1);
+                                    historyRef.child(receiverHistoryKey).setValue(receiverHistory)
+                                            .addOnSuccessListener(v -> Log.d("HISTORY", "✅ Lưu lịch sử người nhận thành công"))
+                                            .addOnFailureListener(e -> Log.e("HISTORY", "❌ Lỗi khi lưu lịch sử người nhận", e));
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Log.e("HISTORY", "❌ Không thể ghi lịch sử người nhận", error.toException());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("HISTORY", "❌ Không truy vấn được customers", error.toException());
+                        }
+                    });
+
+                })
+                .addOnFailureListener(e -> Log.e("HISTORY", "❌ Lỗi khi lấy số dư mới", e));
+
 
         // Giao dịch mới
         btnNewTransaction.setOnClickListener(v -> fetchBalanceAndProceed(balance -> {

@@ -26,6 +26,10 @@ public class TopUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nap_tien_dien_thoai);
 
+        // Nút back
+        ImageView btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> finish());
+
         edtPhone     = findViewById(R.id.edtSoDienThoai);
         edtSoTien    = findViewById(R.id.edtSoTien);
         tvGoc        = findViewById(R.id.tvThanhToanGoc);

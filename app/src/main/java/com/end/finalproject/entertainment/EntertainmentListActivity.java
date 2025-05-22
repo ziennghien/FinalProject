@@ -13,10 +13,20 @@ import com.end.finalproject.R;
 import com.google.android.material.card.MaterialCardView;
 
 public class EntertainmentListActivity extends AppCompatActivity {
+    private String userId;
+    private String email;
+    private String phoneNumber;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_manager);
+
+        // Nhận các trường được truyền từ CustomerHomeActivity
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("key");
+        email = intent.getStringExtra("email");
+        phoneNumber = intent.getStringExtra("phoneNumber");
 
         CardView cardBus = findViewById(R.id.cardBus);
         cardBus.setOnClickListener(new View.OnClickListener() {
@@ -33,7 +43,11 @@ public class EntertainmentListActivity extends AppCompatActivity {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Khởi tạo Intent và truyền tiếp các thông tin
                         Intent intent = new Intent(EntertainmentListActivity.this, DatVeXeActivity.class);
+                        intent.putExtra("key", userId);
+                        intent.putExtra("email", email);
+                        intent.putExtra("phoneNumber", phoneNumber);
                         startActivity(intent);
                     }
                 })

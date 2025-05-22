@@ -54,11 +54,14 @@ public class CustomerHomeActivity extends AppCompatActivity {
         String email       = getIntent().getStringExtra("email");
         String phoneNumber = getIntent().getStringExtra("phoneNumber");
 
-        welcomeText.setText(ten);
-        accountNumber.setText("Tài khoản: " + stk);
-        balance.setText("Số dư: " + soDu + " VND");
-
-        // Animations
+        // 👉 Set dữ liệu vào View
+        welcomeText.setText(ten); // Ví dụ: Nguyễn Văn A
+        accountNumber.setText("Tài khoản: " + stk); // Ví dụ: 123456789
+        balance.setText("Số dư: " + soDu + " VND"); // Ví dụ: 20,000,000 VND
+        String userId = getIntent().getStringExtra("key");
+        String email = getIntent().getStringExtra("email");
+        String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        // Load animation
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         accountCard.startAnimation(fadeIn);
         welcomeText.startAnimation(fadeIn);
@@ -66,7 +69,14 @@ public class CustomerHomeActivity extends AppCompatActivity {
         // Transfer button
         LinearLayout transferBtn = findViewById(R.id.layoutTransfer);
         transferBtn.setOnClickListener(view -> {
-            startActivity(new Intent(CustomerHomeActivity.this, TransferActivity.class));
+            Intent intent = new Intent(CustomerHomeActivity.this, TransferActivity.class);
+            intent.putExtra("key", userId);
+            intent.putExtra("accountNumber", stk);
+            intent.putExtra("balance", soDu);
+            intent.putExtra("name", ten);
+            intent.putExtra("phoneNumber", phoneNumber);
+            startActivity(intent);
+
         });
 
         // Account detail card

@@ -25,7 +25,6 @@
 
         <activity android:name=".OtpActivity" />
         <activity android:name=".home.CustomerHomeActivity"/>
-        <activity android:name=".customer.AccountDetailActivity" />
         <activity android:name=".home.EmployeeHomeActivity" />
         <activity android:name=".management.DanhSachKhachHangActivity" />
         <activity android:name=".management.AccountDetailManagementActivity" />
@@ -34,6 +33,9 @@
         <activity android:name=".entertainment.DanhSachVeXeActivity" />
         <activity android:name=".entertainment.ChonGheActivity" />
 
+        <activity android:name=".customer.AccountDetailActivity" />
+        <activity android:name=".customer.TransferActivity" />
+        <activity android:name=".customer.TransactionSuccessActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Header Toolbar -->
+    <LinearLayout
+        android:id="@+id/headerToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/pink_primary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back"
+            app:tint="@android:color/white"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Nạp tiền"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Số tiền hiển thị -->
+    <EditText
+        android:id="@+id/edtSoTien"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Số tiền muốn nạp"
+        android:enabled="false"
+        android:backgroundTint="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/headerToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp" />
+
+    <GridLayout
+        android:id="@+id/gridMenhGia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="true"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/edtSoTien"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btn10k"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="6dp"
+            android:text="10.000"
+            android:textSize="12dp"
+            android:textColor="#000000"
+            android:backgroundTint="@android:color/white"
+            android:elevation="2dp"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/btn20k"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="6dp"
+            android:backgroundTint="@android:color/white"
+            android:elevation="2dp"
+            android:stateListAnimator="@null"
+            android:text="20.000"
+            android:textSize="12dp"
+            android:textColor="#000000"/>
+
+        <Button
+            android:id="@+id/btn50k"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="6dp"
+            android:text="50.000"
+            android:textColor="#000000"
+            android:backgroundTint="@android:color/white"
+            android:elevation="2dp"
+            android:textSize="12dp"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/btn100k"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="6dp"
+            android:text="100.000"
+            android:textColor="#000000"
+            android:textSize="12dp"
+            android:backgroundTint="@android:color/white"
+            android:elevation="2dp"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/btn200k"
+            android:textSize="12dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="6dp"
+            android:text="200.000"
+            android:textColor="#000000"
+            android:backgroundTint="@android:color/white"
+            android:elevation="2dp"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/btn500k"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="6dp"
+            android:text="500.000"
+            android:textSize="12dp"
+            android:textColor="#000000"
+            android:backgroundTint="@android:color/white"
+            android:elevation="2dp"
+            android:stateListAnimator="@null"/>
+    </GridLayout>
+
+
+
+    <!-- Box thông tin thanh toán với shadow -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/boxThongTin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/gridMenhGia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Thanh toán gốc -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Thanh toán gốc:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvThanhToanGoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0đ"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Chiết khấu -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Chiết khấu 2.5%:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvChietKhau"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0đ"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Tổng thanh toán -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tổng thanh toán:"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTongThanhToan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0đ"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <!-- Nút Thanh Toán cố định dưới màn hình -->
+    <Button
+        android:id="@+id/btnThanhToan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Thanh toán 0đ"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:backgroundTint="@color/pink_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

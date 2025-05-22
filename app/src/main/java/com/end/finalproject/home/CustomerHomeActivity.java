@@ -59,9 +59,6 @@ public class CustomerHomeActivity extends AppCompatActivity {
         welcomeText.setText(ten); // Ví dụ: Nguyễn Văn A
         accountNumber.setText("Tài khoản: " + stk); // Ví dụ: 123456789
         balance.setText("Số dư: " + soDu + " VND"); // Ví dụ: 20,000,000 VND
-        String userId = getIntent().getStringExtra("key");
-        String email = getIntent().getStringExtra("email");
-        String phoneNumber = getIntent().getStringExtra("phoneNumber");
         // Load animation
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         accountCard.startAnimation(fadeIn);

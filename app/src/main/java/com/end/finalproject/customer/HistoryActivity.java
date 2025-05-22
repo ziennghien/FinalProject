@@ -51,21 +51,25 @@ public class HistoryActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 historyList.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
+                    String key = child.getKey();  // Lấy key như "history1"
                     String customerId = child.child("customerId").getValue(String.class);
                     if (currentId.equals(customerId)) {
                         String date = child.child("date").getValue(String.class);
                         String status = child.child("balanceStatus").getValue(String.class);
                         String info = child.child("info").getValue(String.class);
-                        historyList.add(new History(date, status, info));
+                        historyList.add(new History(key, date, status, info));
                     }
                 }
+
+                // Sắp xếp danh sách
+                historyList.sort((h1, h2) -> h2.getKey().compareToIgnoreCase(h1.getKey()));
+
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
+
     }
 }

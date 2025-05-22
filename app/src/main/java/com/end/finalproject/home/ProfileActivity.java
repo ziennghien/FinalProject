@@ -41,34 +41,50 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Nhận dữ liệu từ Intent
         userId = getIntent().getStringExtra("userId");
-        edtEmail.setText(getIntent().getStringExtra("email"));
-        edtName.setText(getIntent().getStringExtra("name"));
-        edtPhone.setText(getIntent().getStringExtra("phoneNumber"));
-        edtPassword.setText(getIntent().getStringExtra("password"));
-        edtRole.setText(getIntent().getStringExtra("role"));
+        DatabaseReference userRef = FirebaseDatabase.getInstance(DB_URL).getReference("users").child(userId);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String name = snapshot.child("name").getValue(String.class);
+                    String email = snapshot.child("email").getValue(String.class);
+                    String phone = snapshot.child("phoneNumber").getValue(String.class);
+                    String password = snapshot.child("password").getValue(String.class);
+                    String role = snapshot.child("role").getValue(String.class);
+
+                    edtName.setText(name);
+                    edtEmail.setText(email);
+                    edtPhone.setText(phone);
+                    edtPassword.setText(password);
+                    edtRole.setText(role);
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ProfileActivity.this, "Lỗi tải thông tin người dùng", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         edtRole.setEnabled(false); // Không cho sửa quyền
 
         edtUserId.setText(userId);
         edtUserId.setEnabled(false);
-
+        edtName.setEnabled(false);
+        edtPhone.setEnabled(false);
         // Sự kiện lưu
         btnSave.setOnClickListener(v -> checkValidationAndSave());
     }
 
     private void checkValidationAndSave() {
-        String name = edtName.getText().toString().trim();
-        String phone = edtPhone.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
 
-        if (name.isEmpty() || phone.isEmpty() || password.isEmpty() || email.isEmpty()) {
+        if (password.isEmpty() || email.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Kiểm tra định dạng số điện thoại
-        if (!phone.matches("\\+84\\d{9}")) {
-            Toast.makeText(this, "Số điện thoại phải theo định dạng +84xxxxxxxxx", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -90,9 +106,6 @@ public class ProfileActivity extends AppCompatActivity {
                     String phoneInDb = userSnap.child("phoneNumber").getValue(String.class);
                     String emailInDb = userSnap.child("email").getValue(String.class);
 
-                    if (phone.equals(phoneInDb) && !userId.equals(key)) {
-                        isDuplicatePhone = true;
-                    }
 
                     if (email.equalsIgnoreCase(emailInDb) && !userId.equals(key)) {
                         isDuplicateEmail = true;
@@ -106,8 +119,6 @@ public class ProfileActivity extends AppCompatActivity {
                 } else {
                     // Cập nhật thông tin
                     DatabaseReference currentUserRef = usersRef.child(userId);
-                    currentUserRef.child("name").setValue(name);
-                    currentUserRef.child("phoneNumber").setValue(phone);
                     currentUserRef.child("password").setValue(password);
                     currentUserRef.child("email").setValue(email);
 

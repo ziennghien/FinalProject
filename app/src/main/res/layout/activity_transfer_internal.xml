@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <!-- Header -->
     <LinearLayout
@@ -27,13 +27,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="Chuyển tiền ngân hàng khác"
+            android:text="Chuyển tiền nội bộ KDK Bank"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- Nội dung cuộn -->
+    <!-- Nội dung -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -44,30 +44,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Ngân hàng nhận -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ngân hàng nhận"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:layout_marginBottom="4dp" />
-
-            <Spinner
-                android:id="@+id/spinnerBank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- Tài khoản nhận -->
             <EditText
                 android:id="@+id/edtReceiverAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tài khoản/thẻ nhận"
-                android:inputType="number"
-                android:layout_marginTop="16dp" />
+                android:hint="Tài khoản nhận"
+                android:inputType="number" />
 
-            <!-- Tên người nhận -->
             <EditText
                 android:id="@+id/edtReceiverName"
                 android:layout_width="match_parent"
@@ -78,7 +61,6 @@
                 android:textColor="@android:color/black"
                 android:layout_marginTop="8dp" />
 
-            <!-- Số tiền -->
             <EditText
                 android:id="@+id/edtAmount"
                 android:layout_width="match_parent"
@@ -87,7 +69,6 @@
                 android:inputType="numberDecimal"
                 android:layout_marginTop="16dp" />
 
-            <!-- Nội dung chuyển -->
             <EditText
                 android:id="@+id/edtNote"
                 android:layout_width="match_parent"
@@ -96,16 +77,6 @@
                 android:inputType="text"
                 android:layout_marginTop="16dp" />
 
-            <!-- Phân loại giao dịch -->
-            <EditText
-                android:id="@+id/edtPurpose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phân loại giao dịch"
-                android:inputType="text"
-                android:layout_marginTop="16dp" />
-
-            <!-- Nút tiếp tục -->
             <Button
                 android:id="@+id/btnContinue"
                 android:layout_width="match_parent"

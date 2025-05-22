@@ -356,13 +356,10 @@ public class TransferActivity extends AppCompatActivity {
                                     intent.putExtra("transactionId", transactionId);
                                     intent.putExtra("key", userId);
                                     intent.putExtra("accountNumber", fromAccount);
-                                    intent.putExtra("balance", currentBalance - amount);
                                     intent.putExtra("name", ten);
                                     intent.putExtra("phoneNumber", phoneNumber);
                                     startActivity(intent);
                                     finish(); // kết thúc TransferActivity
-
-                                    btnContinue.setEnabled(true);
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(this, "❌ Giao dịch ghi thành công nhưng cập nhật số dư thất bại", Toast.LENGTH_SHORT).show();

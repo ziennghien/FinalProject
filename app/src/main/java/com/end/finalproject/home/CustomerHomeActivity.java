@@ -3,6 +3,7 @@ package com.end.finalproject.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -16,10 +17,13 @@ import com.end.finalproject.R;
 import com.end.finalproject.customer.AccountDetailActivity;
 import com.end.finalproject.customer.HistoryActivity;
 import com.end.finalproject.customer.TransferActivity;
+import com.end.finalproject.customer.TransferInternalActivity;
 import com.end.finalproject.entertainment.EntertainmentListActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CustomerHomeActivity extends AppCompatActivity {
 
@@ -48,21 +52,58 @@ public class CustomerHomeActivity extends AppCompatActivity {
         bottomNav     = findViewById(R.id.bottom_navigation);
 
         // Data from Intent
-        String ten         = getIntent().getStringExtra("name");
-        String stk         = getIntent().getStringExtra("accountNumber");
-        String soDu        = getIntent().getStringExtra("balance");
         String userId      = getIntent().getStringExtra("key");
         String email       = getIntent().getStringExtra("email");
         String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        String ten         = getIntent().getStringExtra("name");
+        String stk         = getIntent().getStringExtra("accountNumber");
 
+        welcomeText.setText(ten);
+        accountNumber.setText("Tài khoản: " + stk);
+
+        // Lấy số dư từ Firebase
+        DatabaseReference balanceRef = FirebaseDatabase
+                .getInstance("https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app")
+                .getReference("customers")
+                .child(userId)
+                .child("checkingAccount")
+                .child("balance");
+
+        balanceRef.get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                double balanceValue = snapshot.getValue(Double.class);
+                balance.setText("Số dư: " + String.format("%,.0f", balanceValue) + " VND");
+            } else {
+                balance.setText("Số dư: không xác định");
+            }
+        }).addOnFailureListener(e -> {
+            balance.setText("Lỗi khi tải số dư");
+        });
         // 👉 Set dữ liệu vào View
         welcomeText.setText(ten); // Ví dụ: Nguyễn Văn A
         accountNumber.setText("Tài khoản: " + stk); // Ví dụ: 123456789
-        balance.setText("Số dư: " + soDu + " VND"); // Ví dụ: 20,000,000 VND
+
         // Load animation
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         accountCard.startAnimation(fadeIn);
         welcomeText.startAnimation(fadeIn);
+
+        // Transfer in button
+        LinearLayout layoutTransferIn = findViewById(R.id.layoutTransferIn);
+        if (layoutTransferIn == null) {
+            Log.e("CustomerHome", "❌ layoutTransferIn bị null! Kiểm tra ID trong XML");
+        } else {
+            layoutTransferIn.setOnClickListener(v -> {
+                Log.d("CustomerHome", "➡️ Bấm vào nút chuyển tiền nội bộ");
+                Intent intent = new Intent(CustomerHomeActivity.this, TransferInternalActivity.class);
+                intent.putExtra("key", userId);
+                intent.putExtra("accountNumber", stk);
+                intent.putExtra("name", ten);
+                intent.putExtra("phoneNumber", phoneNumber);
+                startActivity(intent);
+            });
+        }
+
 
         // Transfer button
         LinearLayout transferBtn = findViewById(R.id.layoutTransfer);
@@ -70,7 +111,6 @@ public class CustomerHomeActivity extends AppCompatActivity {
             Intent intent = new Intent(CustomerHomeActivity.this, TransferActivity.class);
             intent.putExtra("key", userId);
             intent.putExtra("accountNumber", stk);
-            intent.putExtra("balance", soDu);
             intent.putExtra("name", ten);
             intent.putExtra("phoneNumber", phoneNumber);
             startActivity(intent);

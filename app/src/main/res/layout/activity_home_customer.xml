@@ -247,10 +247,9 @@
             android:gravity="center_vertical"
             android:weightSum="3"
             android:layout_marginBottom="8dp">
-
             <!-- Chuyển tiền -->
             <LinearLayout
-                android:id="@+id/layoutTransfer"
+                android:id="@+id/layoutTransferIn"
                 style="@style/FeatureItemStyle"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp">
@@ -264,14 +263,32 @@
 
                 <TextView
                     style="@style/FeatureTextStyle"
-                    android:text="Chuyển tiền" />
+                    android:text="Chuyển tiền KDK Digibank" />
+            </LinearLayout>
+            <!-- Chuyển tiền -->
+            <LinearLayout
+                android:id="@+id/layoutTransfer"
+                style="@style/FeatureItemStyle"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_transfer"
+                    app:tint="@color/pink_primary"
+                    android:contentDescription="Chuyển tiền" />
+
+                <TextView
+                    style="@style/FeatureTextStyle"
+                    android:text="Chuyển tiền ngân hàng khác" />
             </LinearLayout>
 
             <!-- Hóa đơn -->
             <LinearLayout
                 style="@style/FeatureItemStyle"
                 android:layout_weight="1"
-                android:layout_marginHorizontal="3dp">
+                android:layout_marginHorizontal="2dp">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -284,6 +301,18 @@
                     style="@style/FeatureTextStyle"
                     android:text="Thanh toán hóa đơn" />
             </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!-- Hàng 2: 2 chức năng -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="3"
+            android:layout_marginBottom="8dp">
 
             <!-- Nạp tiền -->
             <LinearLayout
@@ -302,16 +331,6 @@
                     style="@style/FeatureTextStyle"
                     android:text="Nạp tiền điện thoại" />
             </LinearLayout>
-        </LinearLayout>
-
-        <!-- Hàng 2: 2 chức năng -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:weightSum="2">
-
             <!-- Mua sắm -->
             <LinearLayout
                 android:id="@+id/Entertainment"

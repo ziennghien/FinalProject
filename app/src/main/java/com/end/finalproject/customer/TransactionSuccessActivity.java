@@ -20,6 +20,8 @@ public class TransactionSuccessActivity extends AppCompatActivity {
             txtNote, txtTxnId;
     private Button btnNewTransaction, btnHome;
 
+    private String userId, accountNumber, name, phoneNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,7 @@ public class TransactionSuccessActivity extends AppCompatActivity {
         txtNote = findViewById(R.id.txtNote);
         txtTxnId = findViewById(R.id.txtTxnId);
         btnNewTransaction = findViewById(R.id.btnNewTransaction);
-        btnHome = findViewById(R.id.btnHome); // ánh xạ nút home mới
+        btnHome = findViewById(R.id.btnHome);
 
         // Nhận dữ liệu
         Intent intent = getIntent();
@@ -46,27 +48,27 @@ public class TransactionSuccessActivity extends AppCompatActivity {
         txtNote.setText(intent.getStringExtra("note"));
         txtTxnId.setText(intent.getStringExtra("transactionId"));
 
-        // Nhấn để chuyển sang màn hình giao dịch mới
-        btnNewTransaction.setOnClickListener(v -> {
+        // Dữ liệu dùng lại
+        userId = intent.getStringExtra("key");
+        accountNumber = intent.getStringExtra("accountNumber");
+        name = intent.getStringExtra("name");
+        phoneNumber = intent.getStringExtra("phoneNumber");
+
+        // Giao dịch mới
+        btnNewTransaction.setOnClickListener(v -> fetchBalanceAndProceed(balance -> {
             Intent i = new Intent(TransactionSuccessActivity.this, TransferActivity.class);
-
-            // Lấy dữ liệu cần truyền lại từ Intent hiện tại
-            i.putExtra("key", getIntent().getStringExtra("key"));
-            i.putExtra("accountNumber", getIntent().getStringExtra("accountNumber"));
-            i.putExtra("balance", getIntent().getDoubleExtra("balance", 0));
-            i.putExtra("name", getIntent().getStringExtra("name"));
-            i.putExtra("phoneNumber", getIntent().getStringExtra("phoneNumber"));
-
-            // Xóa stack cũ để tránh back lại màn hình success
+            i.putExtra("key", userId);
+            i.putExtra("accountNumber", accountNumber);
+            i.putExtra("balance", String.format("%,.0f", balance));
+            i.putExtra("name", name);
+            i.putExtra("phoneNumber", phoneNumber);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             finish();
-        });
+        }));
 
-        // Nhấn để quay về trang chủ
-        btnHome.setOnClickListener(v -> {
-            String userId = getIntent().getStringExtra("key");
-
+        // Trở về trang chủ
+        btnHome.setOnClickListener(v -> fetchBalanceAndProceed(balance -> {
             DatabaseReference userRef = FirebaseDatabase
                     .getInstance("https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app")
                     .getReference("users")
@@ -78,10 +80,10 @@ public class TransactionSuccessActivity extends AppCompatActivity {
                 Intent i = new Intent(TransactionSuccessActivity.this, CustomerHomeActivity.class);
                 i.putExtra("key", userId);
                 i.putExtra("email", email);
-                i.putExtra("phoneNumber", getIntent().getStringExtra("phoneNumber"));
-                i.putExtra("name", getIntent().getStringExtra("name"));
-                i.putExtra("accountNumber", getIntent().getStringExtra("accountNumber"));
-                i.putExtra("balance", getIntent().getDoubleExtra("balance", 0));
+                i.putExtra("phoneNumber", phoneNumber);
+                i.putExtra("name", name);
+                i.putExtra("accountNumber", accountNumber);
+                i.putExtra("balance", String.format("%,.0f", balance));
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 finish();
@@ -89,8 +91,37 @@ public class TransactionSuccessActivity extends AppCompatActivity {
                 Toast.makeText(this, "Không thể lấy email", Toast.LENGTH_SHORT).show();
                 Log.e("LOAD_EMAIL", "❌ Lỗi khi đọc email từ Firebase", e);
             });
-        });
-
+        }));
     }
 
+    /**
+     * Tách phần lấy balance từ Firebase dùng lại được
+     */
+    private void fetchBalanceAndProceed(BalanceCallback callback) {
+        DatabaseReference balanceRef = FirebaseDatabase
+                .getInstance("https://finalprojectandroid-ab72b-default-rtdb.asia-southeast1.firebasedatabase.app")
+                .getReference("customers")
+                .child(userId)
+                .child("checkingAccount")
+                .child("balance");
+
+        balanceRef.get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                double balance = snapshot.getValue(Double.class);
+                Log.d("Detail", "Balance từ database: " + balance);
+                callback.onBalanceRetrieved(balance);
+            } else {
+                Toast.makeText(this, "Không tìm thấy số dư", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Lỗi truy vấn số dư: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    /**
+     * Giao diện callback cho việc lấy balance
+     */
+    interface BalanceCallback {
+        void onBalanceRetrieved(double balance);
+    }
 }

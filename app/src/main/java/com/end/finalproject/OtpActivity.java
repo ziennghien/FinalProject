@@ -106,7 +106,6 @@ public class OtpActivity extends AppCompatActivity {
                                                             intent.putExtra("phoneNumber", phoneNumber);
                                                             intent.putExtra("name", name);
                                                             intent.putExtra("accountNumber", accountNumber);
-                                                            intent.putExtra("balance", balance);
                                                             startActivity(intent);
                                                             finish();
                                                         }

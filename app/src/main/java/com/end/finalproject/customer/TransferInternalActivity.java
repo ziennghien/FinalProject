@@ -89,6 +89,11 @@ public class TransferInternalActivity extends AppCompatActivity {
                 return;
             }
 
+            if (amount <= 1000) {
+                Toast.makeText(this, "Số tiền phải lớn hơn 1000", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             // Gửi OTP
             Map<String, Object> data = new HashMap<>();
             data.put("accountNumber", senderAccount);

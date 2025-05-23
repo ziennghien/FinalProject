@@ -355,6 +355,7 @@
 
             <!-- Chi nhánh -->
             <LinearLayout
+                android:id="@+id/Location"
                 style="@style/FeatureItemStyle"
                 android:layout_weight="1"
                 android:layout_marginStart="6dp">
